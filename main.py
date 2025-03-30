@@ -137,6 +137,8 @@ def main():
     # The Main Menu loop
     while True:
         choice_func = show_menu_and_get_input()
+        if choice_func == quit:
+            choice_func()
         choice_func(data_manager)
 
 

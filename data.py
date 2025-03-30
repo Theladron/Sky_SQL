@@ -15,6 +15,19 @@ QUERY_FLIGHTS_BY_DATE = ("SELECT flights.*, "
                          "AND flights.MONTH = :month "
                          "AND flights.YEAR = :year")
 
+QUERY_DELAYED_FLIGHTS_BY_AIRLINE = ("SELECT flights.*, "
+                                    "airlines.airline, "
+                                    "flights.ID as FLIGHT_ID, "
+                                    "flights.DEPARTURE_DELAY as DELAY FROM flights "
+                                    "JOIN airlines ON flights.airline = airlines.id "
+                                    "WHERE airlines.AIRLINE = :airline")
+QUERY_DELAYED_FLIGHTS_BY_AIRPORT = ("SELECT flights.*, "
+                                    "airlines.airline, "
+                                    "flights.ID as FLIGHT_ID, "
+                                    "flights.DEPARTURE_DELAY as DELAY FROM flights "
+                                    "JOIN airlines ON flights.airline = airlines.id "
+                                    "WHERE flights.ORIGIN_AIRPORT = :airport")
+
 class FlightData:
     """
     The FlightData class is a Data Access Layer (DAL) object that provides an
@@ -51,6 +64,14 @@ class FlightData:
     def get_flights_by_date(self, day, month, year):
         params = {'day': day, 'month': month, 'year': year}
         return self._execute_query(QUERY_FLIGHTS_BY_DATE, params)
+
+    def get_delayed_flights_by_airline(self, airline):
+        params = {'airline': airline}
+        return self._execute_query(QUERY_DELAYED_FLIGHTS_BY_AIRLINE, params)
+
+    def get_delayed_flights_by_airport(self, airport):
+        params = {'airport': airport}
+        return self._execute_query(QUERY_DELAYED_FLIGHTS_BY_AIRPORT, params)
 
     def __del__(self):
         """

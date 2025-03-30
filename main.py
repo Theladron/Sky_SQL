@@ -1,9 +1,58 @@
 import data
+import histogram
 from datetime import datetime
 import sqlalchemy
+import heatmap
+import flight_map
 
 SQLITE_URI = 'sqlite:///data/flights.sqlite3'
 IATA_LENGTH = 3
+
+
+def visualize_flight_map(data_manager):
+    """
+    Fetches flight routes with delay percentages and calls the flight map plotting function
+    with the amount of routes to show the user has entered.
+    """
+    # Fetch the flight routes (returns a list of tuples)
+    flight_routes = data_manager.get_flight_routes_with_most_frequent_destinations()
+    print("The map will show the flight paths with the most flights.")
+    while True:
+        number_of_routes = input("Please enter how many routes you want to see"
+                                  " (or leave empty for all routes): ")
+        if not number_of_routes:
+            number_of_routes = len(flight_routes)
+            break
+        elif number_of_routes.isdigit():
+            number_of_routes = int(number_of_routes)
+            break
+        else:
+            print("Error. Input most be a positive, whole number or blank.")
+    flight_map.plot_flight_map(flight_routes, number_of_routes)
+
+
+def visualize_delay_by_airports(data_manager):
+    """
+    Fetches delay percentage by origin and destination airports and calls the heatmap plotting function.
+    """
+    results = data_manager.get_delay_percentage_by_airports()
+    heatmap.plot_delay_heatmap_by_airports(results)
+
+
+def visualize_delay_by_airline(data_manager):
+    """
+    Fetches delay percentage data and calls the histogram plotting function.
+    """
+    results = data_manager.get_delay_percentage_by_airline()
+    histogram.plot_delayed_flights(results)
+
+
+def visualize_delay_by_hour(data_manager):
+    """
+    Fetches delay percentage by hour and calls the histogram plotting function.
+    """
+    results = data_manager.get_delay_percentage_by_hour()
+    histogram.plot_delay_histogram(results)
 
 
 def delayed_flights_by_airline(data_manager):
@@ -126,7 +175,11 @@ FUNCTIONS = { 1: (flight_by_id, "Show flight by ID"),
               2: (flights_by_date, "Show flights by date"),
               3: (delayed_flights_by_airline, "Delayed flights by airline"),
               4: (delayed_flights_by_airport, "Delayed flights by origin airport"),
-              5: (quit, "Exit")
+              5: (visualize_delay_by_airline, "Visualize airline delay percentages"),
+              6: (visualize_delay_by_hour, "Visualize delay percentages by hour"),
+              7: (visualize_delay_by_airports, "Visualize delay percentages by origin and destination airports"),
+              8: (visualize_flight_map, "Visualize flight routes and delay percentages on map"),
+              9: (quit, "Exit")
              }
 
 

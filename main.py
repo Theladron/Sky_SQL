@@ -1,11 +1,9 @@
-import data
-import histogram
+from backend import data
 from datetime import datetime
 import sqlalchemy
-import heatmap
-import flight_map
+from scripts import flight_map, heatmap, histogram
 
-SQLITE_URI = 'sqlite:///data/flights.sqlite3'
+SQLITE_URI = 'sqlite:///data/db/flights.sqlite3'
 IATA_LENGTH = 3
 
 
@@ -52,7 +50,7 @@ def visualize_delay_by_hour(data_manager):
     Fetches delay percentage by hour and calls the histogram plotting function.
     """
     results = data_manager.get_delay_percentage_by_hour()
-    histogram.plot_delay_histogram(results)
+    histogram.plot_delay_by_hour(results)
 
 
 def delayed_flights_by_airline(data_manager):
@@ -184,6 +182,8 @@ FUNCTIONS = { 1: (flight_by_id, "Show flight by ID"),
 
 
 def main():
+    """Creates FlightData object instance and starts the main menu loop, allowing the user
+    to call the different functions"""
     # Create an instance of the Data Object using our SQLite URI
     data_manager = data.FlightData(SQLITE_URI)
 

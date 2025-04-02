@@ -4,7 +4,7 @@ import numpy as np
 
 def plot_delay_heatmap_by_airports(delay_data):
     """
-    Plots a heatmap of flight delays by origin and destination airports.
+    Plots a heatmap of flight delays by origin and destination airports and saves it.
     :param delay_data: List of tuples (origin_airport, destination_airport, delay_percentage)
     """
     # Extract unique airports
@@ -41,6 +41,6 @@ def plot_delay_heatmap_by_airports(delay_data):
 
     plt.xticks(rotation=90)
     plt.tight_layout()
-    plt.savefig("data/delay_by_airports.png")
-    print("diagram saved in data as as delay_by_airports.png")
+    plt.savefig("data/output/delay_by_airports.png")
+    print("diagram saved in data/output folder as as delay_by_airports.png")
     plt.close()

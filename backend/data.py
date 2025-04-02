@@ -1,5 +1,4 @@
 from sqlalchemy import create_engine, text
-import pandas as pd
 
 QUERY_FLIGHT_BY_ID = ("SELECT flights.*, "
                       "airlines.airline, "
@@ -38,11 +37,11 @@ QUERY_DELAY_PERCENTAGE_BY_AIRLINE = ("SELECT airlines.airline, "
                                      "GROUP BY airlines.airline "
                                      "ORDER BY delay_percentage DESC;")
 
-QUERY_DELAY_PERCENTAGE_BY_HOUR = ("SELECT CAST(SUBSTR(flights.DEPARTURE_TIME,"
-                                  " 1, LENGTH(flights.DEPARTURE_TIME) - 2) AS INTEGER) AS hour"
-                                  ",CAST(SUM(CASE WHEN flights.DEPARTURE_DELAY > 0 "
-                                  "THEN 1 ELSE 0 END) AS FLOAT) / COUNT(*) * 100 "
-                                  "AS delay_percentageFROM flights "
+QUERY_DELAY_PERCENTAGE_BY_HOUR = ("SELECT CAST(SUBSTR(flights.DEPARTURE_TIME, 1, 2) AS INTEGER) "
+                                  "AS hour, "
+                                  "CAST(SUM(CASE WHEN flights.DEPARTURE_DELAY > 0 THEN 1 "
+                                  "ELSE 0 END) AS FLOAT) / COUNT(*) * 100 AS delay_percentage "
+                                  "FROM flights "
                                   "GROUP BY hour "
                                   "ORDER BY hour;")
 

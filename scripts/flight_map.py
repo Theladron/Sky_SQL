@@ -4,7 +4,7 @@ from collections import Counter, defaultdict
 
 def plot_flight_map(flight_routes, number_of_routes):
     """
-    Plots the 20 most used flight routes on a map using the given data.
+    Plots the most used flight routes on a map using the given data and saves it.
     :param flight_routes: List of tuples containing flight information.
     :param number_of_routes: Number of routes shown as integer
     """
@@ -91,14 +91,12 @@ def plot_flight_map(flight_routes, number_of_routes):
 
     add_color_scale(flight_map)
 
-    flight_map.save("data/flight_map.html")
-    print("Map saved in data as as flight_map.html")
+    flight_map.save("data/output/flight_map.html")
+    print("flight map saved in data/output folder as flight_map.html")
 
 
 def map_delay_to_folium_color(normalized_delay):
-    """
-    Map the normalized delay to one of 7 colors.
-    """
+    """Map the normalized delay to one of 7 colors."""
     if normalized_delay < 0.11:
         return 'green'
     elif normalized_delay < 0.14:
@@ -116,9 +114,7 @@ def map_delay_to_folium_color(normalized_delay):
 
 
 def add_color_scale(flight_map):
-    """
-    Adds a gradient color bar (legend) to the map without a title.
-    """
+    """Adds a gradient color bar (legend) to the map without a title."""
     colormap = branca.colormap.LinearColormap(
         colors=['green', 'yellow', 'red'],
         vmin=0.02, vmax=0.33

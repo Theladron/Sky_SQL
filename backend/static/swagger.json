@@ -1,0 +1,240 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Flight Data API",
+    "version": "1.0.0",
+    "description": "API for flight data, including delays and routes. Sample data (10 points) for processing purposes"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5002"
+    }
+  ],
+  "paths": {
+    "/api/flight/{flight_id}": {
+      "get": {
+        "summary": "Get flight by ID",
+        "parameters": [
+          {
+            "name": "flight_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flight data retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "flight_id": {
+                      "type": "integer"
+                    },
+                    "flight_data": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Flight not found"
+          }
+        }
+      }
+    },
+    "/api/flight/date": {
+      "get": {
+        "summary": "Get flights by date",
+        "parameters": [
+          {
+            "name": "day",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flights retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "flight_id": {
+                        "type": "integer"
+                      },
+                      "departure_time": {
+                        "type": "string"
+                      },
+                      "delay": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing date parameters"
+          }
+        }
+      }
+    },
+    "/api/flight/routes": {
+      "get": {
+        "description": "Sample Data (10 points) for the most frequent destinations",
+        "summary": "Get flight routes with the most frequent destinations",
+        "responses": {
+          "200": {
+            "description": "Routes retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "route_id": {
+                        "type": "integer"
+                      },
+                      "origin": {
+                        "type": "string"
+                      },
+                      "destination": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/flight/delay/": {
+      "get": {
+        "summary": "Get delayed flights by airline or airport",
+        "parameters": [
+          {
+            "name": "airline",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+
+            },
+            "description": "Full airline name"
+          },
+          {
+            "name": "airport",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+
+            },
+            "description": "Airport IATA code"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delayed flights retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "flight_id": {
+                        "type": "integer"
+                      },
+                      "delay": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required parameter: airline or airport"
+          }
+        }
+      }
+    },
+    "/api/flight/delay/percentage/": {
+      "get": {
+        "summary": "Get delay percentage by category",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["airline", "hour", "airports"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delay percentage retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "type": "string"
+                      },
+                      "percentage": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or missing category parameter. Choose from airline, hour, or airports."
+          }
+        }
+      }
+    }
+  }
+}

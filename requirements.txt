@@ -1,0 +1,9 @@
+flask
+matplotlib
+seaborn
+numpy
+folium
+branca
+sqlalchemy
+flask-swagger-ui
+flask_cors

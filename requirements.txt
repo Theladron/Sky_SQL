@@ -5,5 +5,5 @@ numpy
 folium
 branca
 sqlalchemy
-flask-swagger-ui
+flask_swagger_ui
 flask_cors

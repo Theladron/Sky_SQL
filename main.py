@@ -31,7 +31,8 @@ def visualize_flight_map(data_manager):
 
 def visualize_delay_by_airports(data_manager):
     """
-    Fetches delay percentage by origin and destination airports and calls the heatmap plotting function.
+    Fetches delay percentage by origin and destination airports and calls
+    the heatmap plotting function.
     """
     results = data_manager.get_delay_percentage_by_airports()
     heatmap.plot_delay_heatmap_by_airports(results)
@@ -131,7 +132,7 @@ def print_results(results):
 
         # Check that all required columns are in place
         try:
-            delay = int(result['DELAY']) if result['DELAY'] else 0  # If delay columns is NULL, set it to 0
+            delay = int(result['DELAY']) if result['DELAY'] else 0
             origin = result['ORIGIN_AIRPORT']
             dest = result['DESTINATION_AIRPORT']
             airline = result['AIRLINE']
@@ -175,7 +176,8 @@ FUNCTIONS = { 1: (flight_by_id, "Show flight by ID"),
               4: (delayed_flights_by_airport, "Delayed flights by origin airport"),
               5: (visualize_delay_by_airline, "Visualize airline delay percentages"),
               6: (visualize_delay_by_hour, "Visualize delay percentages by hour"),
-              7: (visualize_delay_by_airports, "Visualize delay percentages by origin and destination airports"),
+              7: (visualize_delay_by_airports, "Visualize delay percentages by origin "
+                                               "and destination airports"),
               8: (visualize_flight_map, "Visualize flight routes and delay percentages on map"),
               9: (quit, "Exit")
              }

@@ -9,7 +9,8 @@ from backend import data
 
 # Initialize Flask app and data manager
 app = Flask(__name__)
-SQLITE_URI = f"sqlite:///{os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'db', 'flights.sqlite3'))}"
+SQLITE_URI = f"sqlite:///{os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 
+                                                       'data', 'db', 'flights.sqlite3'))}"
 data_manager = data.FlightData(SQLITE_URI)
 
 # Enable CORS for all routes
@@ -33,7 +34,8 @@ def serve_swagger():
     """
     Serves the Swagger JSON file from the static directory.
     """
-    return send_from_directory(os.path.join(os.path.dirname(__file__), 'static'), 'swagger.json')
+    return send_from_directory(os.path.join(os.path.dirname(__file__), 'static'),
+                               'swagger.json')
 
 @app.route('/api/flight/<int:flight_id>', methods=['GET'])
 def get_flight_by_id(flight_id):

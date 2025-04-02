@@ -51,7 +51,8 @@ QUERY_DELAY_PERCENTAGE_BY_AIRPORTS = ("SELECT flights.ORIGIN_AIRPORT, "
                                       "THEN 1 ELSE 0 END) AS FLOAT) / COUNT(*) * 100 "
                                       "AS delay_percentage "
                                       "FROM flights "
-                                      "GROUP BY flights.ORIGIN_AIRPORT, flights.DESTINATION_AIRPORT "
+                                      "GROUP BY flights.ORIGIN_AIRPORT, "
+                                      "flights.DESTINATION_AIRPORT "
                                       "ORDER BY delay_percentage DESC;")
 
 QUERY_FLIGHT_ROUTES_WITH_DELAY_AND_AIRPORTS = ("WITH MostFrequentDestinations AS "
@@ -156,7 +157,6 @@ class FlightData:
     def get_delay_percentage_by_hour(self):
         """
         Fetches the percentage of delayed flights for each hour.
-
         :return: List of tuples containing (hour, delay_percentage)
         """
         with self._engine.connect() as connection:
@@ -165,8 +165,8 @@ class FlightData:
 
     def get_delay_percentage_by_airports(self):
         """
-        Fetches the percentage of delayed flights for each combination of origin and destination airports.
-
+        Fetches the percentage of delayed flights for each combination of origin and
+        destination airports.
         :return: List of tuples containing (origin_airport, destination_airport, delay_percentage)
         """
         with self._engine.connect() as connection:
@@ -175,7 +175,8 @@ class FlightData:
 
     def get_flight_routes_with_most_frequent_destinations(self):
         """
-        Fetches the flight routes along with delay percentages, and airport information (latitude, longitude).
+        Fetches the flight routes along with delay percentages,
+        and airport information (latitude, longitude).
         :return: List of tuples containing flight route information
         """
         with self._engine.connect() as connection:

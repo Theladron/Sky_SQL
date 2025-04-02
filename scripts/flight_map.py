@@ -51,8 +51,10 @@ def plot_flight_map(flight_routes, number_of_routes):
         airport_delays[destination_airport]['count'] += 1
 
         # Store the latest airport locations
-        airport_delays[origin_airport]['lat'], airport_delays[origin_airport]['lon'] = origin_lat, origin_lon
-        airport_delays[destination_airport]['lat'], airport_delays[destination_airport]['lon'] = dest_lat, dest_lon
+        airport_delays[origin_airport]['lat'], airport_delays[origin_airport]['lon'] \
+            = origin_lat, origin_lon
+        airport_delays[destination_airport]['lat'], airport_delays[destination_airport]['lon'] \
+            = dest_lat, dest_lon
 
         # Normalize delay percentage to match color scale (0.02 to 0.33)
         normalized_delay = 0.02 + (delay_percentage / 100) * (0.33 - 0.02)

@@ -1,6 +1,8 @@
-import folium
-import branca
 from collections import Counter, defaultdict
+
+import branca
+import folium
+
 
 def plot_flight_map(flight_routes, number_of_routes):
     """

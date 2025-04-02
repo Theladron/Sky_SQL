@@ -1,15 +1,16 @@
-from flask import Flask, request, jsonify, send_from_directory
-from flask_swagger_ui import get_swaggerui_blueprint
-from flask_cors import CORS
-import sys
 import os
+import sys
+
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
+from flask_swagger_ui import get_swaggerui_blueprint
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from backend import data
 
-
 # Initialize Flask app and data manager
 app = Flask(__name__)
-SQLITE_URI = f"sqlite:///{os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 
+SQLITE_URI = f"sqlite:///{os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
                                                        'data', 'db', 'flights.sqlite3'))}"
 data_manager = data.FlightData(SQLITE_URI)
 
@@ -29,6 +30,7 @@ swagger_ui_blueprint = get_swaggerui_blueprint(
 )
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 
+
 @app.route('/static/swagger.json')
 def serve_swagger():
     """
@@ -36,6 +38,7 @@ def serve_swagger():
     """
     return send_from_directory(os.path.join(os.path.dirname(__file__), 'static'),
                                'swagger.json')
+
 
 @app.route('/api/flight/<int:flight_id>', methods=['GET'])
 def get_flight_by_id(flight_id):
@@ -48,6 +51,7 @@ def get_flight_by_id(flight_id):
     """
     results = data_manager.get_flight_by_id(flight_id)
     return jsonify([dict(row._mapping) for row in results])
+
 
 @app.route('/api/flight/date', methods=['GET'])
 def get_flights_by_date():
@@ -69,6 +73,7 @@ def get_flights_by_date():
     results = results[:10]
     return jsonify([dict(row._mapping) for row in results])
 
+
 @app.route('/api/flight/routes', methods=['GET'])
 def get_flight_routes_with_most_frequent_destinations():
     """
@@ -80,6 +85,7 @@ def get_flight_routes_with_most_frequent_destinations():
     results = data_manager.get_flight_routes_with_most_frequent_destinations()
     results = results[:10]
     return jsonify([dict(row._mapping) for row in results])
+
 
 @app.route('/api/flight/delay/', methods=['GET'])
 def get_delayed_flights():
@@ -106,6 +112,7 @@ def get_delayed_flights():
     results = results[:10]
     return jsonify([dict(row._mapping) for row in results])
 
+
 @app.route('/api/flight/delay/percentage/', methods=['GET'])
 def get_delay_percentage():
     """
@@ -129,8 +136,8 @@ def get_delay_percentage():
         return jsonify({'error': 'Invalid or missing category parameter. '
                                  'Choose from airline, hour, or airports.'}), 400
 
-
     return jsonify([dict(row._mapping) for row in results])
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5002, debug=True)

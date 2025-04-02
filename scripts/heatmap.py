@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
+import seaborn as sns
+
 
 def plot_delay_heatmap_by_airports(delay_data):
     """
@@ -25,7 +26,6 @@ def plot_delay_heatmap_by_airports(delay_data):
         if origin_idx is not None and dest_idx is not None:
             delay_matrix[origin_idx, dest_idx] = delay
 
-    # Define color scale
     cmap = sns.color_palette("Reds", as_cmap=True)
 
     # Set up the plot
@@ -34,7 +34,6 @@ def plot_delay_heatmap_by_airports(delay_data):
                      xticklabels=destination_airports, yticklabels=origin_airports,
                      cbar_kws={'label': 'Delay Percentage (%)'}, linewidths=0.5)
 
-    # Add titles and labels
     ax.set_title("Flight Delay Percentage by Origin and Destination Airport")
     ax.set_xlabel("Destination Airport")
     ax.set_ylabel("Origin Airport")

@@ -1,6 +1,8 @@
-from backend import data
 from datetime import datetime
+
 import sqlalchemy
+
+from backend import data
 from scripts import flight_map, heatmap, histogram
 
 SQLITE_URI = 'sqlite:///data/db/flights.sqlite3'
@@ -17,7 +19,7 @@ def visualize_flight_map(data_manager):
     print("The map will show the flight paths with the most flights.")
     while True:
         number_of_routes = input("Please enter how many routes you want to see"
-                                  " (or leave empty for all routes): ")
+                                 " (or leave empty for all routes): ")
         if not number_of_routes:
             number_of_routes = len(flight_routes)
             break
@@ -167,19 +169,20 @@ def show_menu_and_get_input():
             pass
         print("Try again...")
 
+
 """
 Function Dispatch Dictionary
 """
-FUNCTIONS = { 1: (flight_by_id, "Show flight by ID"),
-              2: (flights_by_date, "Show flights by date"),
-              3: (delayed_flights_by_airline, "Delayed flights by airline"),
-              4: (delayed_flights_by_airport, "Delayed flights by origin airport"),
-              5: (visualize_delay_by_airline, "Visualize airline delay percentages"),
-              6: (visualize_delay_by_hour, "Visualize delay percentages by hour"),
-              7: (visualize_delay_by_airports, "Visualize delay percentages by origin "
-                                               "and destination airports"),
-              8: (visualize_flight_map, "Visualize flight routes and delay percentages on map"),
-              9: (quit, "Exit")
+FUNCTIONS = {1: (flight_by_id, "Show flight by ID"),
+             2: (flights_by_date, "Show flights by date"),
+             3: (delayed_flights_by_airline, "Delayed flights by airline"),
+             4: (delayed_flights_by_airport, "Delayed flights by origin airport"),
+             5: (visualize_delay_by_airline, "Visualize airline delay percentages"),
+             6: (visualize_delay_by_hour, "Visualize delay percentages by hour"),
+             7: (visualize_delay_by_airports, "Visualize delay percentages by origin "
+                                              "and destination airports"),
+             8: (visualize_flight_map, "Visualize flight routes and delay percentages on map"),
+             9: (quit, "Exit")
              }
 
 

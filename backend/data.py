@@ -110,7 +110,6 @@ class FlightData:
             results = connection.execute(text(query), params)
         return results.fetchall()
 
-
     def get_flight_by_id(self, flight_id):
         """
         Searches for flight details using flight ID.
@@ -153,7 +152,6 @@ class FlightData:
             results = connection.execute(text(QUERY_DELAY_PERCENTAGE_BY_AIRLINE))
             return results.fetchall()
 
-
     def get_delay_percentage_by_hour(self):
         """
         Fetches the percentage of delayed flights for each hour.
@@ -182,7 +180,6 @@ class FlightData:
         with self._engine.connect() as connection:
             results = connection.execute(text(QUERY_FLIGHT_ROUTES_WITH_DELAY_AND_AIRPORTS))
             return results.fetchall()
-
 
     def __del__(self):
         """

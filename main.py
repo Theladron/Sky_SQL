@@ -28,6 +28,7 @@ def visualize_flight_map(data_manager):
             break
         else:
             print("Error. Input most be a positive, whole number or blank.")
+
     flight_map.plot_flight_map(flight_routes, number_of_routes)
 
 
@@ -78,6 +79,7 @@ def delayed_flights_by_airport(data_manager):
         airport_input = input("Enter origin airport IATA code: ")
         if airport_input.isalpha() and len(airport_input) == IATA_LENGTH:
             valid = True
+
     results = data_manager.get_delayed_flights_by_airport(airport_input)
     print_results(results)
 
@@ -96,6 +98,7 @@ def flight_by_id(data_manager):
             print("Try again...")
         else:
             valid = True
+
     results = data_manager.get_flight_by_id(id_input)
     print_results(results)
 
@@ -115,6 +118,7 @@ def flights_by_date(data_manager):
             print("Try again...", e)
         else:
             valid = True
+
     results = data_manager.get_flights_by_date(date.day, date.month, date.year)
     print_results(results)
 
@@ -128,10 +132,7 @@ def print_results(results):
     """
     print(f"Got {len(results)} results.")
     for result in results:
-        # turn result into dictionary
         result = result._mapping
-
-        # Check that all required columns are in place
         try:
             delay = int(result['DELAY']) if result['DELAY'] else 0
             origin = result['ORIGIN_AIRPORT']
@@ -141,7 +142,6 @@ def print_results(results):
             print("Error showing results: ", e)
             return
 
-        # Different prints for delayed and non-delayed flights
         if delay and delay > 0:
             print(f"{result['ID']}. {origin} -> {dest} by {airline}, Delay: {delay} Minutes")
         else:

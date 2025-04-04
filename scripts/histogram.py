@@ -21,9 +21,9 @@ def plot_delayed_flights(data):
     plt.xticks(rotation=30, ha="right")  # Rotate airline names for better readability
     plt.tight_layout()
 
-    plt.show()
     plt.savefig("data/output/delay_by_airline.png")
     print("Diagram saved in data/output folder as delay_by_airline.png")
+    plt.close()
 
 
 def plot_delay_by_hour(delay_data):
@@ -76,5 +76,4 @@ def plot_delay_by_hour(delay_data):
     plt.savefig("data/output/delay_by_hour.png")
     print("Diagram saved in data/output folder as delay_by_hour.png")
 
-    # Close the plot after saving
     plt.close()

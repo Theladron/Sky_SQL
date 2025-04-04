@@ -20,7 +20,6 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 # Swagger UI configuration
 SWAGGER_URL = "/api/docs"
 API_URL_PATH = "/static/swagger.json"
-print(API_URL_PATH)
 swagger_ui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL_PATH,

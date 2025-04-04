@@ -76,7 +76,6 @@ def delayed_flights_by_airport(data_manager):
     valid = False
     while not valid:
         airport_input = input("Enter origin airport IATA code: ")
-        # Valide input
         if airport_input.isalpha() and len(airport_input) == IATA_LENGTH:
             valid = True
     results = data_manager.get_delayed_flights_by_airport(airport_input)

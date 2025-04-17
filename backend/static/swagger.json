@@ -109,29 +109,42 @@
         }
       }
     },
-    "/api/flight/routes": {
-      "get": {
-        "description": "Sample Data (10 points) for the most frequent destinations",
-        "summary": "Get flight routes with the most frequent destinations",
-        "responses": {
-          "200": {
-            "description": "Routes retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "route_id": {
-                        "type": "integer"
-                      },
-                      "origin": {
-                        "type": "string"
-                      },
-                      "destination": {
-                        "type": "string"
-                      }
+"/api/flight/routes": {
+  "get": {
+    "summary": "Get flight routes with the most frequent destinations",
+    "description": "Sample Data (10 points) for the most frequent destinations. Supports pagination via `offset`.",
+    "parameters": [
+      {
+        "name": "offset",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "default": 0,
+          "minimum": 0
+        },
+        "description": "Pagination offset. Returns 10 results starting from this offset."
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Routes retrieved successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "route_id": {
+                    "type": "integer"
+                  },
+                  "origin": {
+                    "type": "string"
+                  },
+                  "destination": {
+                    "type": "string"
+                  }
                     }
                   }
                 }

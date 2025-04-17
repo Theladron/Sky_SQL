@@ -6,8 +6,9 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from backend import data
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Setup Logging
 logging.basicConfig(level=logging.INFO)
@@ -75,8 +76,8 @@ def get_flight_by_id(flight_id):
         if not results:
             return jsonify({'message': 'No flight found for the provided ID'}), 404
         return jsonify([dict(row) for row in results])
-    except Exception as e:
-        logger.error(f"error getting flight by ID: {e}", exc_info=True)
+    except Exception as error:
+        logger.error(f"error getting flight by ID: %s", error, exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 
@@ -106,8 +107,8 @@ def get_flights_by_date():
         paged_results = results[offset:offset + 10]
 
         return jsonify([dict(row) for row in paged_results])
-    except Exception as e:
-        logger.error(f"error getting flights by date: {e}", exc_info=True)
+    except Exception as error:
+        logger.error(f"error getting flights by date: %s", error, exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 
@@ -126,8 +127,8 @@ def get_flight_routes_with_most_frequent_destinations():
         results = data_manager.get_flight_routes_with_most_frequent_destinations()
         paged_results = results[offset:offset + 10]
         return jsonify([dict(row) for row in paged_results])
-    except Exception as e:
-        logger.error(f"error getting flight routes: {e}", exc_info=True)
+    except Exception as error:
+        logger.error("error getting flight routes: %s", error, exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 
@@ -165,8 +166,8 @@ def get_delayed_flights():
 
         paged_results = results[offset:offset + 10]
         return jsonify([dict(row) for row in paged_results])
-    except Exception as e:
-        logger.error(f"Error getting delayed flights: {e}", exc_info=True)
+    except Exception as error:
+        logger.error("Error getting delayed flights: %s", error, exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 
@@ -201,8 +202,8 @@ def get_delay_percentage():
         if not results:
             return jsonify({'message': 'No delay percentages found'}), 404
         return jsonify([dict(row) for row in results])
-    except Exception as e:
-        logger.error(f"Error getting delay percentages: {e}", exc_info=True)
+    except Exception as error:
+        logger.error("Error getting delay percentages: %s", error, exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 

@@ -23,7 +23,7 @@ def visualize_flight_map(data_manager):
         print("The map will show the flight paths with the most flights.")
         while True:
             number_of_routes = input("Please enter how many routes you want to see"
-                                    " (or leave empty for all routes): ")
+                                     " (or leave empty for all routes): ")
             if not number_of_routes:
                 number_of_routes = len(flight_routes)
                 break

@@ -1,5 +1,6 @@
-from sqlalchemy import create_engine, text
 import logging
+
+from sqlalchemy import create_engine, text
 
 QUERY_FLIGHT_BY_ID = ("SELECT flights.*, "
                       "airlines.airline, "
@@ -113,8 +114,8 @@ class FlightData:
             with self._engine.connect() as connection:
                 results = connection.execute(text(query), params)
                 return results.mappings().all()
-        except Exception as e:
-            logging.error(f"Error executing query: {e}")
+        except Exception as error:
+            logging.error("Error executing query: %s", error)
             return []
 
     def get_flight_by_id(self, flight_id):

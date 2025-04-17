@@ -6,9 +6,8 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 
-from backend import data
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from backend import data
 
 # Setup Logging
 logging.basicConfig(level=logging.INFO)

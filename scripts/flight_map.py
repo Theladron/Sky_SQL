@@ -7,11 +7,12 @@ import folium
 def plot_flight_map(flight_routes, number_of_routes):
     """
     Plots the most used flight routes on a map using the given data and saves it.
-    :param flight_routes: List of tuples containing flight information.
+    :param flight_routes: List of dict-like RowMapping objects (from .mappings().all()).
     :param number_of_routes: Number of routes shown as integer
     """
     # Count occurrences of each route
-    route_counter = Counter([(r[0], r[1]) for r in flight_routes])
+    route_counter = Counter([(r['ORIGIN_AIRPORT'],
+                              r['DESTINATION_AIRPORT']) for r in flight_routes])
     top_routes = set(route for route, _ in route_counter.most_common(number_of_routes))
 
     # Create a dictionary to track total delay and count per airport
@@ -24,26 +25,22 @@ def plot_flight_map(flight_routes, number_of_routes):
             print(f"Skipping invalid entry (wrong length): {route}")
             continue
 
-        (origin_airport,
-         destination_airport,
-         origin_city,
-         destination_city,
-         origin_lat,
-         origin_lon,
-         dest_lat,
-         dest_lon,
-         delay_percentage) = route
+        try:
+            origin_airport = route['ORIGIN_AIRPORT']
+            destination_airport = route['DESTINATION_AIRPORT']
+            origin_city = route['ORIGIN_CITY']
+            destination_city = route['DESTINATION_CITY']
+            origin_lat = float(route['ORIGIN_LAT'])
+            origin_lon = float(route['ORIGIN_LON'])
+            dest_lat = float(route['DESTINATION_LAT'])
+            dest_lon = float(route['DESTINATION_LON'])
+            delay_percentage = float(route['DELAY_PERCENTAGE'])
+        except (KeyError, ValueError, TypeError) as e:
+            print(f"Skipping invalid entry: {route} ({e})")
+            continue
 
         # Only keep the top most used routes
         if (origin_airport, destination_airport) not in top_routes:
-            continue
-
-        try:
-            origin_lat, origin_lon = float(origin_lat), float(origin_lon)
-            dest_lat, dest_lon = float(dest_lat), float(dest_lon)
-            delay_percentage = float(delay_percentage)
-        except ValueError:
-            print(f"Skipping invalid coordinates: {route}")
             continue
 
         # Update the total delay and count for both airports
@@ -57,6 +54,10 @@ def plot_flight_map(flight_routes, number_of_routes):
             = origin_lat, origin_lon
         airport_delays[destination_airport]['lat'], airport_delays[destination_airport]['lon'] \
             = dest_lat, dest_lon
+
+        # Add the origin and destination city to the airport dictionary
+        airport_delays[origin_airport]['city'] = origin_city
+        airport_delays[destination_airport]['city'] = destination_city
 
         # Normalize delay percentage to match color scale (0.02 to 0.33)
         normalized_delay = 0.02 + (delay_percentage / 100) * (0.33 - 0.02)
@@ -89,7 +90,8 @@ def plot_flight_map(flight_routes, number_of_routes):
 
             folium.Marker(
                 location=[stats['lat'], stats['lon']],
-                popup=f"Airport: {airport}, Avg Delay: {avg_delay:.2f}%",
+                popup=f"City: {stats.get('city', 'Unknown')} ({airport})"
+                      f", Avg Delay: {avg_delay:.2f}%",
                 icon=folium.Icon(color=delay_color, icon="plane"),
             ).add_to(flight_map)
 

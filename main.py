@@ -16,20 +16,22 @@ def visualize_flight_map(data_manager):
     Fetches flight routes with delay percentages and calls the flight map plotting function
     with the amount of routes to show the user has entered.
     """
-    # Fetch the flight routes (returns a list of tuples)
     flight_routes = data_manager.get_flight_routes_with_most_frequent_destinations()
-    print("The map will show the flight paths with the most flights.")
-    while True:
-        number_of_routes = input("Please enter how many routes you want to see"
-                                 " (or leave empty for all routes): ")
-        if not number_of_routes:
-            number_of_routes = len(flight_routes)
-            break
-        elif number_of_routes.isdigit():
-            number_of_routes = int(number_of_routes)
-            break
-        else:
-            print("Error. Input most be a positive, whole number or blank.")
+    if not flight_routes:
+        print("Error. No data retrieved.")
+    else:
+        print("The map will show the flight paths with the most flights.")
+        while True:
+            number_of_routes = input("Please enter how many routes you want to see"
+                                    " (or leave empty for all routes): ")
+            if not number_of_routes:
+                number_of_routes = len(flight_routes)
+                break
+            elif number_of_routes.isdigit():
+                number_of_routes = int(number_of_routes)
+                break
+            else:
+                print("Error. Input most be a positive, whole number or blank.")
 
     flight_map.plot_flight_map(flight_routes, number_of_routes)
 
@@ -40,7 +42,10 @@ def visualize_delay_by_airports(data_manager):
     the heatmap plotting function.
     """
     results = data_manager.get_delay_percentage_by_airports()
-    heatmap.plot_delay_heatmap_by_airports(results)
+    if not results:
+        print("Error. No data retrieved.")
+    else:
+        heatmap.plot_delay_heatmap_by_airports(results)
 
 
 def visualize_delay_by_airline(data_manager):
@@ -48,7 +53,10 @@ def visualize_delay_by_airline(data_manager):
     Fetches delay percentage data and calls the histogram plotting function.
     """
     results = data_manager.get_delay_percentage_by_airline()
-    histogram.plot_delayed_flights(results)
+    if not results:
+        print("Error. No data retrieved.")
+    else:
+        histogram.plot_delayed_flights(results)
 
 
 def visualize_delay_by_hour(data_manager):
@@ -56,7 +64,10 @@ def visualize_delay_by_hour(data_manager):
     Fetches delay percentage by hour and calls the histogram plotting function.
     """
     results = data_manager.get_delay_percentage_by_hour()
-    histogram.plot_delay_by_hour(results)
+    if not results:
+        print("Error. No data retrieved.")
+    else:
+        histogram.plot_delay_by_hour(results)
 
 
 def delayed_flights_by_airline(data_manager):
@@ -96,8 +107,8 @@ def flight_by_id(data_manager):
     while not valid:
         try:
             id_input = int(input("Enter flight ID: "))
-        except Exception as e:
-            print("Try again...")
+        except ValueError:
+            print("Please enter a whole number.")
         else:
             valid = True
 
@@ -134,7 +145,6 @@ def print_results(results):
     """
     print(f"Got {len(results)} results.")
     for result in results:
-        result = result._mapping
         try:
             delay = int(result['DELAY']) if result['DELAY'] else 0
             origin = result['ORIGIN_AIRPORT']

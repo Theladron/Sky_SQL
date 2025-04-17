@@ -21,7 +21,7 @@ try:
     data_manager = data.FlightData(SQLITE_URI)
     logger.info("Database connection established.")
 except Exception as e:
-    logger.error("Fehler beim Initialisieren der Datenbankverbindung", exc_info=True)
+    logger.error("Error initializing database", exc_info=True)
     print(f"Error initializing data manager: {e}")
     data_manager = None
 

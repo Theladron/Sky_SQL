@@ -21,17 +21,19 @@ QUERY_DELAYED_FLIGHTS_BY_AIRLINE = ("SELECT flights.*, "
                                     "flights.ID as FLIGHT_ID, "
                                     "flights.DEPARTURE_DELAY as DELAY FROM flights "
                                     "JOIN airlines ON flights.airline = airlines.id "
-                                    "WHERE airlines.AIRLINE = :airline")
+                                    "WHERE airlines.AIRLINE = :airline"
+                                    "AND flights.DEPARTURE_DELAY >= 20")
 
 QUERY_DELAYED_FLIGHTS_BY_AIRPORT = ("SELECT flights.*, "
                                     "airlines.airline, "
                                     "flights.ID as FLIGHT_ID, "
                                     "flights.DEPARTURE_DELAY as DELAY FROM flights "
                                     "JOIN airlines ON flights.airline = airlines.id "
-                                    "WHERE flights.ORIGIN_AIRPORT = :airport")
+                                    "WHERE flights.ORIGIN_AIRPORT = :airport"
+                                    "AND flights.DEPARTURE_DELAY >= 20")
 
 QUERY_DELAY_PERCENTAGE_BY_AIRLINE = ("SELECT airlines.airline, "
-                                     "CAST(SUM(CASE WHEN flights.DEPARTURE_DELAY > 0 THEN 1 "
+                                     "CAST(SUM(CASE WHEN flights.DEPARTURE_DELAY >= 20 THEN 1 "
                                      "ELSE 0 END) AS FLOAT) / COUNT(*) * 100 AS delay_percentage "
                                      "FROM flights JOIN airlines ON flights.airline = airlines.id "
                                      "GROUP BY airlines.airline "
@@ -39,7 +41,7 @@ QUERY_DELAY_PERCENTAGE_BY_AIRLINE = ("SELECT airlines.airline, "
 
 QUERY_DELAY_PERCENTAGE_BY_HOUR = ("SELECT CAST(SUBSTR(flights.DEPARTURE_TIME, 1, 2) AS INTEGER) "
                                   "AS hour, "
-                                  "CAST(SUM(CASE WHEN flights.DEPARTURE_DELAY > 0 THEN 1 "
+                                  "CAST(SUM(CASE WHEN flights.DEPARTURE_DELAY >= 20 THEN 1 "
                                   "ELSE 0 END) AS FLOAT) / COUNT(*) * 100 AS delay_percentage "
                                   "FROM flights "
                                   "GROUP BY hour "
@@ -47,7 +49,7 @@ QUERY_DELAY_PERCENTAGE_BY_HOUR = ("SELECT CAST(SUBSTR(flights.DEPARTURE_TIME, 1,
 
 QUERY_DELAY_PERCENTAGE_BY_AIRPORTS = ("SELECT flights.ORIGIN_AIRPORT, "
                                       "flights.DESTINATION_AIRPORT, "
-                                      "CAST(SUM(CASE WHEN flights.DEPARTURE_DELAY > 0 "
+                                      "CAST(SUM(CASE WHEN flights.DEPARTURE_DELAY >= 20 "
                                       "THEN 1 ELSE 0 END) AS FLOAT) / COUNT(*) * 100 "
                                       "AS delay_percentage "
                                       "FROM flights "
@@ -69,7 +71,7 @@ QUERY_FLIGHT_ROUTES_WITH_DELAY_AND_AIRPORTS = ("WITH MostFrequentDestinations AS
                                                "o.LONGITUDE AS ORIGIN_LON, "
                                                "d.LATITUDE AS DESTINATION_LAT, "
                                                "d.LONGITUDE AS DESTINATION_LON, "
-                                               "CAST(SUM(CASE WHEN f.DEPARTURE_DELAY > 0 THEN 1 "
+                                               "CAST(SUM(CASE WHEN f.DEPARTURE_DELAY >= 20 THEN 1 "
                                                "ELSE 0 END) AS FLOAT) / COUNT(*) * 100 "
                                                "AS delay_percentage "
                                                "FROM flights as f "

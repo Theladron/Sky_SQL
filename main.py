@@ -1,13 +1,13 @@
+import os
 from datetime import datetime
 
 import sqlalchemy
-import os
 
 from backend import data
 from scripts import flight_map, heatmap, histogram
 
 SQLITE_URI = f"""sqlite:///{os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                       'data', 'db', 'flights.sqlite3'))}"""
+                                                         'data', 'db', 'flights.sqlite3'))}"""
 IATA_LENGTH = 3
 
 

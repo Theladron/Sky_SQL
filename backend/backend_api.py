@@ -11,7 +11,7 @@ from backend import data
 # Initialize Flask app and data manager
 app = Flask(__name__)
 SQLITE_URI = f"""sqlite:///{os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
-                                                       'data', 'db', 'flights.sqlite3'))}"""
+                                                         'data', 'db', 'flights.sqlite3'))}"""
 data_manager = data.FlightData(SQLITE_URI)
 
 # Enable CORS for all routes

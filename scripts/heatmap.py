@@ -6,7 +6,8 @@ import seaborn as sns
 def plot_delay_heatmap_by_airports(delay_data):
     """
     Plots a heatmap of flight delays by origin and destination airports and saves it.
-    :param delay_data: List of dicts with keys 'ORIGIN_AIRPORT', 'DESTINATION_AIRPORT', 'DELAY_PERCENTAGE'
+    :param delay_data: List of dicts with keys
+    'ORIGIN_AIRPORT', 'DESTINATION_AIRPORT', 'DELAY_PERCENTAGE'
     """
     # Extract unique airports
     origin_airports = sorted(set(entry['ORIGIN_AIRPORT'] for entry in delay_data))

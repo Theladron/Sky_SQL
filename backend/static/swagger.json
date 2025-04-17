@@ -5,11 +5,6 @@
     "version": "1.0.0",
     "description": "API for flight data, including delays and routes. Sample data (10 entries but pagination available) for processing purposes"
   },
-  "servers": [
-    {
-      "url": "http://localhost:5002"
-    }
-  ],
   "paths": {
     "/api/flight/{flight_id}": {
       "get": {

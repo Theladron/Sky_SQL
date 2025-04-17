@@ -46,7 +46,8 @@ def serve_swagger():
     """
     Serves the Swagger JSON file from the static directory.
     """
-    return send_from_directory(os.path.join(os.path.dirname(__file__), 'static'), 'swagger.json')
+    return send_from_directory(os.path.join(os.path.dirname(__file__), 'static'),
+                               'swagger.json')
 
 
 @app.route('/api/health', methods=['GET'])
@@ -189,7 +190,8 @@ def get_delay_percentage():
         if category not in valid_categories:
             return jsonify(
                 {
-                    'error': f'Invalid category. Valid categories: {", ".join(valid_categories)}'}), 400
+                    'error': f'Invalid category. '
+                             f'Valid categories: {", ".join(valid_categories)}'}), 400
 
         if category == 'airline':
             results = data_manager.get_delay_percentage_by_airline()

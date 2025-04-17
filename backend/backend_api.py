@@ -74,7 +74,7 @@ def get_flight_by_id(flight_id):
         results = data_manager.get_flight_by_id(flight_id)
         if not results:
             return jsonify({'message': 'No flight found for the provided ID'}), 404
-        return jsonify([dict(row._mapping) for row in results])
+        return jsonify([dict(row) for row in results])
     except Exception as e:
         logger.error(f"error getting flight by ID: {e}", exc_info=True)
         return jsonify({'error': str(e)}), 500
@@ -97,12 +97,15 @@ def get_flights_by_date():
         day = request.args.get('day', type=int)
         month = request.args.get('month', type=int)
         year = request.args.get('year', type=int)
+        offset = request.args.get('offset', default=0, type=int)
 
         if not all([day, month, year]):
             return jsonify({'error': 'Missing date parameters'}), 400
 
         results = data_manager.get_flights_by_date(day, month, year)
-        return jsonify([dict(row._mapping) for row in results[:10]])
+        paged_results = results[offset:offset + 10]
+
+        return jsonify([dict(row) for row in paged_results])
     except Exception as e:
         logger.error(f"error getting flights by date: {e}", exc_info=True)
         return jsonify({'error': str(e)}), 500
@@ -122,7 +125,7 @@ def get_flight_routes_with_most_frequent_destinations():
         offset = request.args.get('offset', default=0, type=int)
         results = data_manager.get_flight_routes_with_most_frequent_destinations()
         paged_results = results[offset:offset + 10]
-        return jsonify([dict(row._mapping) for row in paged_results])
+        return jsonify([dict(row) for row in paged_results])
     except Exception as e:
         logger.error(f"error getting flight routes: {e}", exc_info=True)
         return jsonify({'error': str(e)}), 500
@@ -145,9 +148,11 @@ def get_delayed_flights():
     try:
         airline = request.args.get('airline')
         airport = request.args.get('airport')
+        offset = request.args.get('offset', default=0, type=int)
 
         if airline and airport:
-            return jsonify({'error': 'Please provide either an airline or an airport'}), 400
+            return jsonify(
+                {'error': 'Please provide either an airline or an airport, not both'}), 400
         if airline:
             results = data_manager.get_delayed_flights_by_airline(airline)
         elif airport:
@@ -157,7 +162,9 @@ def get_delayed_flights():
 
         if not results:
             return jsonify({'message': 'No delayed flights found'}), 404
-        return jsonify([dict(row._mapping) for row in results[:10]])
+
+        paged_results = results[offset:offset + 10]
+        return jsonify([dict(row) for row in paged_results])
     except Exception as e:
         logger.error(f"Error getting delayed flights: {e}", exc_info=True)
         return jsonify({'error': str(e)}), 500
@@ -190,11 +197,10 @@ def get_delay_percentage():
             results = data_manager.get_delay_percentage_by_hour()
         elif category == 'airports':
             results = data_manager.get_delay_percentage_by_airports()
-            results = results[:10]
 
         if not results:
             return jsonify({'message': 'No delay percentages found'}), 404
-        return jsonify([dict(row._mapping) for row in results])
+        return jsonify([dict(row) for row in results])
     except Exception as e:
         logger.error(f"Error getting delay percentages: {e}", exc_info=True)
         return jsonify({'error': str(e)}), 500

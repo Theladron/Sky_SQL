@@ -3,7 +3,7 @@
   "info": {
     "title": "Flight Data API",
     "version": "1.0.0",
-    "description": "API for flight data, including delays and routes. Sample data (10 points) for processing purposes"
+    "description": "API for flight data, including delays and routes. Sample data (10 entries but pagination available) for processing purposes"
   },
   "servers": [
     {
@@ -50,61 +50,72 @@
       }
     },
     "/api/flight/date": {
-      "get": {
-        "summary": "Get flights by date",
-        "parameters": [
-          {
-            "name": "day",
-            "in": "query",
-            "required": true,
+  "get": {
+    "summary": "Get flights by date",
+    "parameters": [
+      {
+        "name": "day",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      {
+        "name": "month",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      {
+        "name": "year",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      {
+        "name": "offset",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "default": 0,
+          "minimum": 0
+        },
+        "description": "Pagination offset. Returns 10 results starting from this offset."
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Flights retrieved successfully",
+        "content": {
+          "application/json": {
             "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "month",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "year",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Flights retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "flight_id": {
-                        "type": "integer"
-                      },
-                      "departure_time": {
-                        "type": "string"
-                      },
-                      "delay": {
-                        "type": "integer"
-                      }
-                    }
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "flight_id": {
+                    "type": "integer"
+                  },
+                  "departure_time": {
+                    "type": "string"
+                  },
+                  "delay": {
+                    "type": "integer"
                   }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Missing date parameters"
+          }
+        }
+      },
+      "400": {
+        "description": "Missing date parameters"
           }
         }
       }
@@ -155,54 +166,63 @@
       }
     },
     "/api/flight/delay/": {
-      "get": {
-        "summary": "Get delayed flights by airline or airport",
-        "parameters": [
-          {
-            "name": "airline",
-            "in": "query",
-            "required": false,
+  "get": {
+    "summary": "Get delayed flights by airline or airport",
+    "parameters": [
+      {
+        "name": "airline",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Full airline name"
+      },
+      {
+        "name": "airport",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Airport IATA code"
+      },
+      {
+        "name": "offset",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "default": 0,
+          "minimum": 0
+        },
+        "description": "Pagination offset. Returns 10 results starting from this offset."
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Delayed flights retrieved successfully",
+        "content": {
+          "application/json": {
             "schema": {
-              "type": "string"
-
-            },
-            "description": "Full airline name"
-          },
-          {
-            "name": "airport",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-
-            },
-            "description": "Airport IATA code"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Delayed flights retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "flight_id": {
-                        "type": "integer"
-                      },
-                      "delay": {
-                        "type": "integer"
-                      }
-                    }
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "flight_id": {
+                    "type": "integer"
+                  },
+                  "delay": {
+                    "type": "integer"
                   }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Missing required parameter: airline or airport"
+          }
+        }
+      },
+      "400": {
+        "description": "Missing required parameter: airline or airport"
           }
         }
       }
